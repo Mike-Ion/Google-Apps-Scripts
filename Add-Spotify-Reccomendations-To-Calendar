@@ -1,10 +1,13 @@
 function MyFunction() {
   var threads = GmailApp.search('is:unread')
+  
   for(var i = 0; i < 100; i++) {
     var message = threads[i].getMessages()[0]; // Get first message
+    
     if (message.getFrom() == 'Spotify <no-reply@spotify.com>' && message.getSubject().includes("Personalized concert recommendations near you"))  {
       var bodystring = message.getPlainBody()
       var splittester = bodystring.split("Artist Image")
+      
       for(var j = 1; j <= 3; j++) {
         var splitnumber = j
         var subsplittester = splittester[splitnumber]
@@ -16,16 +19,13 @@ function MyFunction() {
 
         var showdate1 = new Date(datesplitspring)
         var showdate2 = new Date(showdate1.setFullYear(2022))
-
-        Logger.log(artistsplitstring)
-        Logger.log(showdate2)
-        Logger.log(venuesplitstring)
-        
-        var ConcertsCalendar = //Calendar ID String Required here
+      
+        var ConcertsCalendar = 'p0fjpe3rfr0et6pju91u0j5v5g@group.calendar.google.com'
         var calid = CalendarApp.getCalendarById(ConcertsCalendar)
-        calid.createAllDayEvent(artistsplitstring, showdate2, {location:venuesplitstring},{description: 'from Spotify Email, added to calendar by Google Apps Script'})
+        calid.createAllDayEvent(artistsplitstring, showdate2, {location:venuesplitstring, description: 'from Spotify Email, added to calendar by Google Apps Script'})
 
       }
+    message.markRead()
     }
     else {
     }
