@@ -1,0 +1,33 @@
+function MyFunction() {
+  var threads = GmailApp.search('is:unread')
+  for(var i = 0; i < 100; i++) {
+    var message = threads[i].getMessages()[0]; // Get first message
+    if (message.getFrom() == 'Spotify <no-reply@spotify.com>' && message.getSubject().includes("Personalized concert recommendations near you"))  {
+      var bodystring = message.getPlainBody()
+      var splittester = bodystring.split("Artist Image")
+      for(var j = 1; j <= 3; j++) {
+        var splitnumber = j
+        var subsplittester = splittester[splitnumber]
+        subsplitbyfont = subsplittester.split("font")
+
+        var artistsplitstring = subsplitbyfont[2].substring(15, subsplitbyfont[2].length - 2)
+        var datesplitspring = subsplitbyfont[6].substring(15, subsplitbyfont[6].length - 2)
+        var venuesplitstring = subsplitbyfont[10].substring(15,subsplitbyfont[10].length - 2)
+
+        var showdate1 = new Date(datesplitspring)
+        var showdate2 = new Date(showdate1.setFullYear(2022))
+
+        Logger.log(artistsplitstring)
+        Logger.log(showdate2)
+        Logger.log(venuesplitstring)
+        
+        var ConcertsCalendar = //Calendar ID String Required here
+        var calid = CalendarApp.getCalendarById(ConcertsCalendar)
+        calid.createAllDayEvent(artistsplitstring, showdate2, {location:venuesplitstring},{description: 'from Spotify Email, added to calendar by Google Apps Script'})
+
+      }
+    }
+    else {
+    }
+  }
+}
